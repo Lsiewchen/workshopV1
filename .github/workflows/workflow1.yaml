@@ -1,0 +1,29 @@
+name: Workflow1
+on:
+    push
+        #branches:
+            #- v\d+\.\d+
+            #\d+ matches one or more digit
+            #\. matches literal dot
+
+jobs:
+    job1:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: slack
+              id: slack
+              uses: slackapi/slack-github-action@v1.24.0
+              with:
+                channel-id: 'C05QWSVMH0S'
+                slack-message: |
+                            "*Name*: testName"
+                            "*Matriculation*: testMatri"
+                            "*Email*: testEmail"
+                            "*Git*: testGit"
+                            "*Image*: testImage"
+              env:
+                HTTPS_PROXY: 'https://hooks.slack.com/services/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'
+           
+
+
