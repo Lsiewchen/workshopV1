@@ -2,9 +2,7 @@ name: Workflow1
 on:
     push:
         branches:
-            - v\d+\.\d+
-            ##\d+ matches one or more digit
-            ##\. matches literal dot
+            - 'v[1-9].[1-9]'
 
 jobs:
     my_first_job:
@@ -35,6 +33,9 @@ jobs:
             - name: checkout
               id: checkout
               uses: actions/checkout@v4
+              with:
+                ref: refs/heads/v1.0
+
 
            
 
