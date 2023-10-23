@@ -1,29 +1,43 @@
 name: Workflow1
 on:
-    push
-        #branches:
-            #- v\d+\.\d+
-            #\d+ matches one or more digit
-            #\. matches literal dot
+    push:
+        branches:
+            - v\d+\.\d+
+            ##\d+ matches one or more digit
+            ##\. matches literal dot
 
 jobs:
-    job1:
+    my_first_job:
         runs-on: ubuntu-latest
 
         steps:
-            - name: slack
-              id: slack
-              uses: slackapi/slack-github-action@v1.24.0
+            - name: Slack Message
+              id: slack_message
+              uses: rtCamp/action-slack-notify@v2
               with:
-                channel-id: 'C05QWSVMH0S'
-                slack-message: |
-                            "*Name*: testName"
-                            "*Matriculation*: testMatri"
-                            "*Email*: testEmail"
-                            "*Git*: testGit"
-                            "*Image*: testImage"
+                payload: |
+                  {
+                  "type": "section",  
+                  "text": {
+                      "type": "mrkdwn"
+                      "text": "*Name*: testName"
+                      "text": "*Matriculation*: testMatri"
+                      "text": "*Email*: testEmail"
+                      "text": "*Git*: testGitLink"
+                      "text": "*Image*: testImageLink"
+                    }
+                  }        
               env:
-                HTTPS_PROXY: 'https://hooks.slack.com/services/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'
+                SLACK_TITLE: Post Title
+                SLACK_WEBHOOK_URL: ${{secrets.SLACK_TEST_SUBMISSION}}
+                SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+            - name: checkout
+              id: checkout
+              uses: actions/checkout@v4
+              with:
+                repository: origin/checkout
+
            
 
 
