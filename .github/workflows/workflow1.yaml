@@ -9,32 +9,31 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Slack Message
-              id: slack_message
-              uses: rtCamp/action-slack-notify@v2
-              with:
-                payload: |
-                  {
-                  "type": "section",  
-                  "text": {
-                      "type": "mrkdwn"
-                      "text": "*Name*: testName"
-                      "text": "*Matriculation*: testMatri"
-                      "text": "*Email*: testEmail"
-                      "text": "*Git*: testGitLink"
-                      "text": "*Image*: testImageLink"
-                    }
-                  }        
-              env:
-                SLACK_TITLE: Post Title
-                SLACK_WEBHOOK_URL: ${{secrets.SLACK_TEST_SUBMISSION}}
-                SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          - name: checkout my source
+            id: check_out_my_source
+            uses: actions/checkout@v4
 
-            - name: checkout
-              id: checkout
-              uses: actions/checkout@v4
-              with:
-                ref: refs/heads/v1.0
+          - name: Slack 
+            id: slack_message
+            uses: rtCamp/action-slack-notify@v2    
+            env:
+              SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+              #SLACK_TITLE: Post Title
+              #SLACK_WEBHOOK_URL: ${{secrets.SLACK_TEST_LINK}}
+              #SLACK_CHANNEL: ${{secrets.SLACK_TEST_CHANNEL}}
+              #SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          
+          - name: Run Trivy vulnerability scanner
+            uses: aquasecurity/trivy-action@master
+            with:
+              image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+              format: 'table'
+              exit-code: '1'
+              ignore-unfixed: true
+              vuln-type: 'os,library'
+              severity: 'CRITICAL,HIGH'
+
+            
 
 
            
