@@ -39,6 +39,7 @@ jobs:
               ignore-unfixed: true
               vuln-type: 'os,library'
               severity: 'CRITICAL,HIGH'
+              
 
           - uses: MeilCli/slack-upload-file@v3
             with:
