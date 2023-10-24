@@ -27,6 +27,16 @@ jobs:
               ignore-unfixed: true
               vuln-type: 'os,library'
               severity: 'CRITICAL,HIGH'
+
+          - uses: MeilCli/slack-upload-file@v3
+            with:
+              slack_token: ${{ secrets.SLACK_TOKEN }}
+              channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+              content: 'file content'
+              file_type: 'text'
+              file_name: 'text.txt'
+              title: 'title of file'
+              initial_comment: 'post by slack-upload-file'
             
 
 
