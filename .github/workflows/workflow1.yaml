@@ -92,6 +92,9 @@ jobs:
             run: cosign sign --yes "${TAGS}@${DIGEST}"
 
           
+
+
+            
             
 
 
