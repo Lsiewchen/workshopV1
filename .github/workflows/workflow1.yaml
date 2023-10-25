@@ -65,19 +65,24 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
+        - name: Login to Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Build and Push container images
           uses: docker/build-push-action@v4.0.0
           id: build-and-push
           with:
             push: true
-            tags: Lsiewchen/workshopV1:${{ github.sha }}
+            tags: lsiewchen/go-fortune:${{ github.sha }}
 
         - name: Sign image with a key
           run: |
             cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}"
           env:
-            TAGS: Lsiewchen/workshopV1:${{ github.sha }}
+            TAGS: lsiewchen/go-fortune:${{ github.sha }}
             COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
             COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
 
