@@ -8,21 +8,10 @@ jobs:
     my_first_job:
         runs-on: ubuntu-latest
 
-        steps:
-          - name: Check Commit Message
-            id: check_commit
-            run: |
-              for commit in $(git log --format=%B -n 1 ${{ github.sha }}); do
-              if [[ $commit == '#NORUN'* ]]; then
-                echo "Commit message starts with #NORUN, hence pipeline will not run."
-                exit 78  # Exit with a neutral status (success but with a message).
-              fi
-              done
-            shell: bashs
-          
+        steps:        
           - name: checkout my source
             id: check_out_my_source
-            uses: actions/checkout@v4
+            uses: actions/checkout@v3
 
           - name: Slack Notification
             uses: rtCamp/action-slack-notify@v2
