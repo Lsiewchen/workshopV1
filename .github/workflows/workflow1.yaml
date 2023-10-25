@@ -24,30 +24,26 @@ jobs:
             ignore-unfixed: true
             format: 'table'
             output: 'trivy-results.txt'
-            severity: 'CRITICAL'
+            severity: 'HIGH,CRITICAL'
+            exit-code: 1
 
         - name: Slack Notification
           uses: rtCamp/action-slack-notify@v2
+          if: failure()
           env:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            #SLACK_COLOR: '#FF0000'
-            #SLACK_TITLE: Scan failed - Lee Siew Chen
-            #SLACK_MESSAGE: Failed trivy scan, see uploaded report
-            SLACK_TITLE: Image build and signed
-            SLACK_MESSAGE: |
-              *Name*: Lee Siew Chen
-              *Matriculation*: A0287383N
-              *Email*: e1287866@u.nus.edu
-              *Git*: testGitLink
-              *Image*: testImageLink 
+            SLACK_COLOR: '#FF0000'
+            SLACK_TITLE: Scan failed - Lee Siew Chen
+            SLACK_MESSAGE: Failed trivy scan, see uploaded report
 
-        #- name: Upload files to slack
-        #  uses: MeilCli/slack-upload-file@v3
-        #  with:
-        #    slack_token: ${{ secrets.SLACK_TOKEN }}
-        #    channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-        #    file_path: 'trivy-results.txt'
-        #    initial_comment: 'post by siewchen'
+        - name: Upload files to slack
+          uses: MeilCli/slack-upload-file@v3
+          if: failure()
+          with:
+            slack_token: ${{ secrets.SLACK_TOKEN }}
+            channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+            file_path: 'trivy-results.txt'
+            initial_comment: 'post by siewchen'
 
         - name: Install Cosign
           uses: sigstore/cosign-installer@v3.1.1
@@ -86,6 +82,14 @@ jobs:
             COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
             COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
 
-           
-
-
+        - name: Slack Notification
+          uses: rtCamp/action-slack-notify@v2
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            SLACK_TITLE: Image build and signed
+            SLACK_MESSAGE: |
+              *Name*: Lee Siew Chen
+              *Matriculation*: A0287383N
+              *Email*: e1287866@u.nus.edu
+              *Git*: https://github.com/${{ github.repository }}
+              *Image*: https://hub.docker.com/repository/docker/lsiewchen/go-fortune/general
