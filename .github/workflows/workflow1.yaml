@@ -2,7 +2,9 @@ name: Workflow1
 on:
     push:
         branches:
-          - 'v[1-9].[1-9]'
+          - v\d+\.\d+
+          ##\d+ matches one or more digit
+          ##\. matches literal dot
 
 jobs:
     my_first_job:
