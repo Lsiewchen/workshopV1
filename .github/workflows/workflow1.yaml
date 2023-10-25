@@ -41,13 +41,13 @@ jobs:
               *Git*: testGitLink
               *Image*: testImageLink 
 
-        - name: Upload files to slack
-          uses: MeilCli/slack-upload-file@v3
-          with:
-            slack_token: ${{ secrets.SLACK_TOKEN }}
-            channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-            file_path: 'trivy-results.txt'
-            initial_comment: 'post by siewchen'
+        #- name: Upload files to slack
+        #  uses: MeilCli/slack-upload-file@v3
+        #  with:
+        #    slack_token: ${{ secrets.SLACK_TOKEN }}
+        #    channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+        #    file_path: 'trivy-results.txt'
+        #    initial_comment: 'post by siewchen'
 
         - name: Install Cosign
           uses: sigstore/cosign-installer@v3.1.1
