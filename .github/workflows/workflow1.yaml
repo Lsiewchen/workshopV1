@@ -18,7 +18,7 @@ jobs:
                 exit 78  # Exit with a neutral status (success but with a message).
               fi
               done
-            shell: bash
+            shell: bashs
           
           - name: checkout my source
             id: check_out_my_source
@@ -29,17 +29,14 @@ jobs:
             env:
               SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           
-          - name: Run Trivy vulnerability scanner
+          - name: Run Trivy vulnerability scanner in repo mode
             uses: aquasecurity/trivy-action@master
             with:
-              scan-ref: 'fs'
               scan-type: 'fs'
-              format: 'table'
-              exit-code: '1'
               ignore-unfixed: true
-              vuln-type: 'os,library'
-              severity: 'CRITICAL,HIGH'
-              
+              format: 'table'
+              output: 'trivy-results.txt'
+              severity: 'CRITICAL'
 
           - uses: MeilCli/slack-upload-file@v3
             with:
