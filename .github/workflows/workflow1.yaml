@@ -79,7 +79,6 @@ jobs:
             push: true
             tags: ${{ steps.docker_meta.outputs.tags }}
 
-        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
         - name: Sign image with a key
           run: |
             cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
@@ -94,11 +93,6 @@ jobs:
             DIGEST: ${{ steps.build-and-push.outputs.digest }}
             TAGS: ${{ steps.docker_meta.outputs.tags }}
           run: cosign sign --yes "${TAGS}@${DIGEST}"
-
-
-
-            
-
 
            
 
