@@ -65,34 +65,21 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
-        - id: docker_meta
-          uses: docker/metadata-action@v4.4.0
-          with:
-            images: ghcr.io/sigstore/sample-honk
-            tags: type=sha,format=long
 
         - name: Build and Push container images
           uses: docker/build-push-action@v4.0.0
           id: build-and-push
           with:
-            platforms: linux/amd64,linux/arm/v7,linux/arm64
             push: true
-            tags: ${{ steps.docker_meta.outputs.tags }}
+            tags: Lsiewchen/workshopV1:${{ github.sha }}
 
         - name: Sign image with a key
           run: |
-            cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+            cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}"
           env:
-            TAGS: ${{ steps.docker_meta.outputs.tags }}
+            TAGS: Lsiewchen/workshopV1:${{ github.sha }}
             COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
             COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-            DIGEST: ${{ steps.build-and-push.outputs.digest }}
-
-        - name: Sign the images with GitHub OIDC Token
-          env:
-            DIGEST: ${{ steps.build-and-push.outputs.digest }}
-            TAGS: ${{ steps.docker_meta.outputs.tags }}
-          run: cosign sign --yes "${TAGS}@${DIGEST}"
 
            
 
