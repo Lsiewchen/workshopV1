@@ -91,10 +91,8 @@ jobs:
               TAGS: ${{ steps.docker_meta.outputs.tags }}
             run: cosign sign --yes "${TAGS}@${DIGEST}"
 
-          
 
 
-            
             
 
 
