@@ -24,7 +24,7 @@ jobs:
             ignore-unfixed: true
             format: 'table'
             output: 'trivy-results.txt'
-            severity: 'CRITICAL'
+            severity: 'HIGH,CRITICAL'
             exit-code: 1
 
         - name: Slack Notification
@@ -43,7 +43,7 @@ jobs:
             slack_token: ${{ secrets.SLACK_TOKEN }}
             channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
             file_path: 'trivy-results.txt'
-            initial_comment: 'post by siewchen'
+            initial_comment: 'post by Lee Siew Chen'
 
         - name: Install Cosign
           uses: sigstore/cosign-installer@v3.1.1
